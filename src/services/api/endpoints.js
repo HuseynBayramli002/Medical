@@ -1,4 +1,5 @@
 const hospitalsEndpoints = {
+    hospitals: "hospitals/",
     services: "hospitals/services/",
     chart:"hospitals/services/chart/",
     linebar:"hospitals/services/chart/line-bar/"
