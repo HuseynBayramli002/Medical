@@ -1,10 +1,11 @@
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { HiOutlineDocumentSearch } from "react-icons/hi";
 import { MdOutlinePerson } from "react-icons/md";
 import { CiLogout } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
-import React, { useState } from 'react';
-import SelectAll from "@/common/SelectOne";
+import { useForm } from "react-hook-form";
+import SelectOne from "@/common/SelectOne";
 
 const Header = () => {
     const yearData = ["2023", "2024"];
@@ -12,6 +13,8 @@ const Header = () => {
     const dayData = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"];
     
     const navigate = useNavigate();
+    const { register, handleSubmit, formState: { errors } } = useForm();
+
     const [selectedYear, setSelectedYear] = useState(null);
     const [selectedMonth, setSelectedMonth] = useState(null);
     const [selectedDay, setSelectedDay] = useState(null);
@@ -26,33 +29,33 @@ const Header = () => {
         <div className="container mt-4 flex justify-between">
             <div className="flex gap-5">
                 <Button
-                    className="py-1 px-2  rounded-[7px] outline-none text-emerald-600 border border-neutral-300"
+                    className="py-1 px-2 rounded-[7px] outline-none text-emerald-600 border border-neutral-300"
                 >
                     Hospitals
                 </Button>
                 <Button
                     className="py-1 px-2 rounded-[7px] outline-none bg-emerald-600 border border-emerald-600 text-white "
                 >
-                    Services
+                 Services
                 </Button>
             </div>
-            <div className="flex gap-5 ">
-                <SelectAll 
+            <div className="flex gap-5">
+                <SelectOne 
                     selectData={yearData} 
-                    selectValue={'Year'} 
+                    selectValue={'Yıl'} 
                     selectWidth={'80px'} 
                     onSelect={setSelectedYear}
                 />
-                <SelectAll 
+                <SelectOne 
                     selectData={monthData} 
-                    selectValue={'Month'} 
+                    selectValue={'Ay'} 
                     selectWidth={'112px'} 
                     onSelect={setSelectedMonth}
                     disabled={!selectedYear}
                 />
-                <SelectAll 
+                <SelectOne 
                     selectData={dayData} 
-                    selectValue={'Day'} 
+                    selectValue={'Gün'} 
                     selectWidth={'64px'} 
                     onSelect={setSelectedDay}
                     disabled={!selectedYear || !selectedMonth}

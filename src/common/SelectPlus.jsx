@@ -1,74 +1,62 @@
-// import React, { useState, useEffect } from 'react';
-// import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-// import { useForm, FormProvider, Controller } from 'react-hook-form';
+import React from 'react';
+import { useForm, FormProvider, Controller } from 'react-hook-form';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-// const SelectPlus = (props) => {
-//     const [selectedHospitals, setSelectedHospitals] = useState([]);
+const SelectPlus = ({ handleItemSelect, selectedItems, placeholder, item }) => {
+    const methods = useForm();
 
-    
-//     const handleHospitalSelect = (value) => {
-//         setSelectedHospitals(prevSelected => {
-//             if (prevSelected.includes(value)) {
-//                 return prevSelected.filter(h => h !== value);
-//             } else {
-//                 return [...prevSelected, value];
-//             }
-//         });
-//     };
-//     return (
-//         <div className="bg-slate-50 flex flex-col">
-//                 <form>
-//                     <div>
-//                         <Controller
-//                             name="selectedHospitals"
-//                             control={methods.control}
-//                             defaultValue={[]}
-//                             render={({ field }) => (
-//                                 <Select onValueChange={(value) => {
-//                                     const updatedSelected = handleHospitalSelect(value);
-//                                     field.onChange(updatedSelected);
-//                                 }}>
-//                                     <SelectTrigger className="w-[180px] text-center">
-//                                         <SelectValue>
-//                                             {"Hospitals"}
-//                                         </SelectValue>
-//                                     </SelectTrigger>
+    return (
+        <div className="container mt-5 w-full gap-5 items-stretch h-[500px]">
+            <FormProvider {...methods}>
+                <form>
+                    <div>
+                        <Controller
+                            name="selectedHospitals"
+                            control={methods.control}
+                            defaultValue={[]}
+                            render={({ field }) => (
+                                <Select onValueChange={(value) => {
+                                    const updatedSelected = handleItemSelect(value);
+                                    field?.onChange(updatedSelected);
+                                }}>
+                                    <SelectTrigger className="w-[180px] text-center">
+                                        <SelectValue placeholder={placeholder}>
+                                            {placeholder}
+                                        </SelectValue>
+                                    </SelectTrigger>
 
-//                                     <SelectContent>
-//                                         <SelectGroup>
-//                                             {hospitals?.map((hospital) => (
-//                                                 <SelectItem key={hospital.id} value={hospital.id}>
-//                                                     {selectedHospitals.includes(hospital.id) && "✓ "}
-//                                                     {hospital.name}
-//                                                 </SelectItem>
-//                                             ))}
-//                                         </SelectGroup>
-//                                     </SelectContent>
-//                                 </Select>
-//                             )}
-//                         />
-//                     </div>
-//                 </form>
-            
-//             <div>
-//                 <div className="list-disc list-inside mt-3">
+                                    <SelectContent>
+                                        <SelectGroup>
+                                            {item?.map((item) => (
+                                                <SelectItem key={item.id} value={item.id}>
+                                                    {selectedItems?.includes(item.id) && "✓ "}
+                                                    {item.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
+                            )}
+                        />
+                    </div>
+                </form>
+            </FormProvider>
+            <div>
+                <div className="list-disc list-inside mt-3">
+                    {selectedItems?.length === 0 && item.map((item) => (
+                        <p key={item.id} className="text-gray-800 pb-2 pl-3">
+                            {item.name}
+                        </p>
+                    ))}
+                    {selectedItems?.map((hospitalIds, index) => (
+                        <p key={index} className="text-gray-800 pb-2 pl-3">
+                            {item?.find(hospital => hospital.id === hospitalIds)?.name}
+                        </p>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+};
 
-//                     {selectedHospitals.length === 0 && hospitals.map((hospital) => (
-//                         <p key={hospital.id} className="text-gray-800 pb-2 pl-3">
-//                             {hospital.name}
-//                         </p>
-//                     ))}
-//                     {selectedHospitals.map((hospitalIds, index) => (
-//                         <p key={index} className="text-gray-800 pb-2 pl-3">
-//                             {hospitals.find(hospital => hospital.id === hospitalIds)?.name}
-//                         </p>
-//                     ))}
-
-//                 </div>
-//             </div>
-//         </div>
-
-//     )
-// }
-
-// export default SelectPlus
+export default SelectPlus;
