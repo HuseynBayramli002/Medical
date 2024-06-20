@@ -4,16 +4,16 @@ import { HiOutlineDocumentSearch } from "react-icons/hi";
 import { MdOutlinePerson } from "react-icons/md";
 import { CiLogout } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { useFormContext } from 'react-hook-form';
 import SelectOne from "@/common/SelectOne";
 
 const Header = () => {
     const yearData = ["2023", "2024"];
     const monthData = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const dayData = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"];
-    
+
     const navigate = useNavigate();
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, setValue } = useFormContext();
 
     const [selectedYear, setSelectedYear] = useState(null);
     const [selectedMonth, setSelectedMonth] = useState(null);
@@ -25,18 +25,44 @@ const Header = () => {
         navigate("/");
     };
 
+    const onSubmit = (data) => {
+        const formData = {
+            services_ids: [], // formdaki hizmet ID'lerini buraya ekleyin
+            annotate_type: "price", // veya "count"
+            hospital_id: 1, // hastane ID'si burada belirtin
+            dates: {
+                year: selectedYear,
+                month: selectedMonth,
+                day: selectedDay
+            }
+        };
+
+        console.log(formData);
+    };
+
+    const handleSelectYear = (year) => {
+        setSelectedYear(year);
+        setValue("year", year); // form durumunu güncelle
+    };
+
+    const handleSelectMonth = (month) => {
+        setSelectedMonth(month);
+        setValue("month", month); // form durumunu güncelle
+    };
+
+    const handleSelectDay = (day) => {
+        setSelectedDay(day);
+        setValue("day", day); // form durumunu güncelle
+    };
+
     return (
-        <div className="container mt-4 flex justify-between">
+        <form className="container mt-4 flex justify-between" onSubmit={handleSubmit(onSubmit)}>
             <div className="flex gap-5">
-                <Button
-                    className="py-1 px-2 rounded-[7px] outline-none text-emerald-600 border border-neutral-300"
-                >
+                <Button className="py-1 px-2 rounded-[7px] outline-none text-emerald-600 border border-neutral-300">
                     Hospitals
                 </Button>
-                <Button
-                    className="py-1 px-2 rounded-[7px] outline-none bg-emerald-600 border border-emerald-600 text-white "
-                >
-                 Services
+                <Button className="py-1 px-2 rounded-[7px] outline-none bg-emerald-600 border border-emerald-600 text-white">
+                    Services
                 </Button>
             </div>
             <div className="flex gap-5">
@@ -44,20 +70,20 @@ const Header = () => {
                     selectData={yearData} 
                     selectValue={'Yıl'} 
                     selectWidth={'80px'} 
-                    onSelect={setSelectedYear}
+                    onSelect={handleSelectYear}
                 />
                 <SelectOne 
                     selectData={monthData} 
                     selectValue={'Ay'} 
                     selectWidth={'112px'} 
-                    onSelect={setSelectedMonth}
+                    onSelect={handleSelectMonth}
                     disabled={!selectedYear}
                 />
                 <SelectOne 
                     selectData={dayData} 
                     selectValue={'Gün'} 
                     selectWidth={'64px'} 
-                    onSelect={setSelectedDay}
+                    onSelect={handleSelectDay}
                     disabled={!selectedYear || !selectedMonth}
                 />
             </div>
@@ -78,7 +104,10 @@ const Header = () => {
                 Log out
                 <CiLogout className="ml-2"/>
             </Button>
-        </div>
+            <Button type="submit" className="py-1 px-3 rounded-[7px] outline-none border">
+                Submit
+            </Button>
+        </form>
     )
 }
 

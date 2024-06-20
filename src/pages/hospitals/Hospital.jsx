@@ -1,15 +1,19 @@
-import Header from '@/layout/Header'
-import Main from '@/layout/Main'
-import React from 'react'
+import React from 'react';
+import { useForm, FormProvider } from 'react-hook-form';
+import Header from '@/layout/Header';
+import Main from '@/layout/Main';
 
 const Hospital = () => {
+  const form = useForm();
+
   return (
     <div>
-      <Header/>
-      <Main/>
-      
+      <FormProvider {...form}>
+        <Header />
+        <Main />
+      </FormProvider>
     </div>
-  )
-}
+  );
+};
 
-export default Hospital
+export default Hospital;
